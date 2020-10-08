@@ -1,0 +1,250 @@
+---
+title: "Ghida Zbib's CV"
+author: Ghida Zbib
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_resume:
+    css: ['css/styles.css', 'resume']
+    # set it to true for a self-contained HTML page but it'll take longer to render
+    self_contained: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+library(glue)
+library(tidyverse)
+
+# Set this to true to have links turned into footnotes at the end of the document
+PDF_EXPORT <- FALSE
+
+# Holds all the links that were inserted for placement at the end
+links <- c()
+
+source('parsing_functions.R')
+
+# Load csv with position info
+position_data <- read_csv('positions.csv')
+```
+
+
+```{r}
+# When in export mode the little dots are unaligned, so fix that. 
+if(PDF_EXPORT){
+  cat("
+  <style>
+  :root{
+    --decorator-outer-offset-left: -6.5px;
+  }
+  </style>")
+}
+```
+
+
+Aside
+================================================================================
+
+
+![logo](beta_dist.png){width=100%}
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+
+- <i class="fa fa-envelope"></i> gzbib@asu.edu
+- <i class="fa fa-twitter"></i> GhidaZbib
+- <i class="fa fa-github"></i> github.com/gzbib
+- <i class="fa fa-link"></i> [ghidazbib.me](http://ghidazbib.me/)
+- <i class="fa fa-phone"></i> (961) 71-719794
+
+
+Language Skills {#skills}
+--------------------------------------------------------------------------------
+
+```{r}
+skills <- tribble(
+  ~skill,               ~level,
+  "R",                  4.5,
+  "Java",               4.5,
+  "Python",             4,
+  "Javascript",         3.5,
+  "SQL",                3,
+  "C",                  3
+                  
+)
+
+build_skill_bars(skills)
+```
+
+
+<br>
+<br>
+<br>
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+
+Made with the R package [**pagedown**](https://github.com/rstudio/pagedown). 
+
+The source code is available at [github.com/gzbib/cv](https://github.com/gzbib/cv).
+
+Last updated on `r Sys.Date()`.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Computer Skills {#skills}
+--------------------------------------------------------------------------------
+
+```{r}
+skills2 <- tribble (
+  
+  ~skill,               ~level,
+  "Microsoft Office",      4.5,
+  "Windows",               4.5,
+  "Eclipse",               4,
+  "Ubuntu",                3,
+  
+  "SAP",                   3,
+  "Packet Tracer",         3 
+  
+  
+  
+)
+
+build_skill_bars(skills2)
+```
+
+<br>
+<br>
+<br>
+<br>
+
+Main
+================================================================================
+
+Ghida Zbib {#title}
+--------------------------------------------------------------------------------
+
+
+
+```{r}
+intro_text <- " I am a current scholar at ASU in the Program Evaluation and Data Analytics major. Although I combined Information Technology with Computer Science in my undergrad, but I have always been passionate about working with data and extracting the best out of it.
+
+Currently I am working as Information Technology Specialist at a university. However, my goal is to find a position that helps businesses leverage their data successfully and improve their strategies.    
+"
+
+cat(sanitize_links(intro_text))
+```
+
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r}
+print_section(position_data, 'education')
+```
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Industry Experience {data-icon=suitcase}
+--------------------------------------------------------------------------------
+
+
+
+```{r}
+print_section(position_data, 'industry_positions')
+```
+
+
+
+<br>
+<br>
+<br>
+
+
+
+::: aside
+I have worked in different environments from business roles to technical ones, aiming to gain the best of both worlds. This gave me a great exposure to learn how I want my career to go. 
+:::
+
+
+Teaching Experience {data-icon=chalkboard-teacher}
+--------------------------------------------------------------------------------
+
+::: aside
+I am passionate about teaching. I think mastering a certain topic and delivering it to students with certain techniques makes me satisfied.
+:::
+
+```{r}
+print_section(position_data, 'teaching_positions')
+```
+
+
+Leadership and Community Activities {data-icon=hands-helping}
+--------------------------------------------------------------------------------
+
+
+::: aside
+I think extracurricular activities helped me shape my personality and develop a lot of soft skills. 
+:::
+
+```{r}
+print_section(position_data, 'extra_activities')
+```
+
+
+Certifications/Awards {data-icon=certificate}
+--------------------------------------------------------------------------------
+
+```{r}
+print_section(position_data, 'cert_award')
+```
+
+
+References {data-icon=link}
+--------------------------------------------------------------------------------
+
+```{r}
+print_section(position_data, 'ref_links')
+```
+
+
+
+
+```{r}
+if(PDF_EXPORT){
+  cat("
+  
+Links {data-icon=link}
+--------------------------------------------------------------------------------
+
+
+<br>
+
+
+")
+  
+  walk2(links, 1:length(links), function(link, index){
+    print(glue('{index}. {link}'))
+  })
+}
+```
+
+
